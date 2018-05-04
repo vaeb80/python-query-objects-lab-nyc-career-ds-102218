@@ -3,117 +3,109 @@
 
 ## Introduction
 
+We have gotten pretty good at storing our instance objects and retrieving them using class variables and class methods. We've also basically mastered how to return our instance and class data in all kinds of fun ways and formats. So, now we are going to practice separating these two jobs. If we think about it, we will probably want to re-use a lot of these query methods like `sort_by` or `find_by` on more than just one class. So, instead of creating the same methods in multiple classes, we can define another class, `Query`, which will hold all these query methods and help clean up our other classes. Let's get started!
 
 ## Objectives
+* Define a Query class and a Person class
+* Define Query class methods that return information about a given class
+* Import the Query class into other classes to utilize the query methods
+* Define class methods that call the Query class from another class
+
+## Define Our Classes
+
+Okay, step one is to define our two initial classes. We will be working with a Person class and a Query class. Define these in the provided person.py and query.py files. We only need an `__init__` method for the Person class, and a person should be initialized with a `_name` and an `_age`. We also need the person class to keep track of all the people, or person instance objects as we like to call them. Let's save them in our `_all` class variable that points to a list and define a class method, `all` that returns the `_all` list.
 
 
-## Instructions
-
-Okay, so, we have a fleet drivers and we want to be able to make queries to get details about our drivers. So, our Driver class should have two class variables; `_all` and `_count`. The `_all` class variable should be assigned to a list that keeps track of all instance objects for the Driver class. The `_count` class variable should keep track of the number of drivers in our fleet. Initially, we wont have any drivers, so, it should be set to `0`.
-
-> **note:** remember to load the autoreload extension from IPython
 ```python
-%load_ext autoreload
-%autoreload 2
+from person import Person
+Person("Jeff", 31)
+Person("Molly", 24)
+Person("Kevin", 38)
+Person("Rachel", 27)
+Person("Devin", 25)
+Person("Michelle", 33)
 ```
 
 
 ```python
-from driver import Driver
+from query import Query
 ```
 
-We want our drivers to have the following attributes; name, car make, and car model. Again, by convention these attributes should have a leading underscore and be snakecased where appropriate. We will also want to define instance methods using the appropriate decorator to read (get) all of these attributes.
+## Define Our Class Methods 
+Next, we want to define query class methods that return information about the person class. Below are a few class methods we can define in the Query class to operate on the person instance objects.
 
 
 ```python
-Driver("Helga Pataki", "Toyota", "Camry")
-Driver("Arnold Shortman", "Toyota", "Highlander")
-Driver("Gerald Johanssen", "Toyota", "Camry")
-Driver("Robert 'Big Bob' Pataki", "Honda", "Pilot")
-Driver("Grandpa Phil", "Jeep", "Grand Cherokee")
-Driver("Rhonda Wellington Lloyd", "Kia", "Sonata")
-Driver("Phoebe Heyerdahl", "Honda", "Civic")
-```
-
-Great! Now, onto the more fun stuff. Let's create a few different instance methods that will help us answer questions like how many drivers do we currently have in our fleet? What percent of drivers drive a Toyota and of that, how many drive a Camry? Or more generally, which car make/models do our drivers drive?
-
-To do this, our class will need to have the two class varibles we mentioned earlier, `_all` and `_count`, as well as the class methods listed below:
-
-> **note:** although it is not necessary, feel free to use more class variables such as `_car_makes` or `_car_models`. Also, consider when is the best time to increment our `_count` class variable or add a new instance object to our `_all` list? It should be the last two lines in our `__init__` method after we have instantiated our instance object and instance variables.
-
-```python
-class Person:
-    
-    _all = []
-    -count = 0
-    
-    def __init__(self, cls, name, age):
-        self.name = name
-        self.age = age
-        # call class method to append `self` to _all
-        # call class method to increment _count by 1
-        
+Query.count(Person) 
+# returns a number for the total count of person instances
 ```
 
 
 ```python
-Driver.fleet_size() # returns the number of drivers in the fleet
-# example: 7
+Query.find_by_name(Person, "Jeff") 
+# returns first person instance object who's name is "Jeff"
 ```
 
 
 ```python
-Driver.driver_names() # returns a list of driver names as strings
-# example: ['Helga Pataki', 'Arnold Shortman','Gerald Johanssen', 
-# "Robert 'Big Bob' Pataki", 'Grandpa Phil', 'Rhonda Wellington Lloyd',
-# 'Phoebe Heyerdahl']
+Query.name_starts_with(Person, "M") 
+# returns a list of person instance objects whose name starts with the letter 'M'
 ```
 
 
 ```python
-Driver.fleet_makes() # returns a list of names car makes in the fleet
-# example: ['Toyota', 'Toyota', 'Toyota', 'Honda', 'Jeep', 'Kia', 'Honda']
+Query.is_older_than(Person, 30) 
+# returns a list of person instance objects whose age is greater than 30
 ```
 
 
 ```python
-Driver.fleet_models() # returns a list of names car models in the fleet
-# example: ["Camry", "Highlander", "Wrangler", "Civic"]
+Query.mean_age(Person) 
+# returns the mean age of all person instance objects
 ```
+
+## Importing The Query Class as a Module
+
+Great! We defined a lot of exciting class methods and they are all working! But it seems a little weird that we are asking the Query class what the mean_age is, right? We understand what's happening but, maybe it would make more sense for us to ask the Person class what the mean age is?
+
+```python
+Person.mean_age()
+```
+
+Wow, yeah that seems to make a lot more sense. It is immediately more evident that we are asking the Person class what the mean age is for all person instance objects.
+
+We still want to have our separation of concerns and keep the querying to the Query class, but we now want to define class methods in the Person class that call the Query class instead of the Query class being called directly. 
+
+To accomplish this, we will need to do one more thing to set up our classes correctly. We need to import the Query class into our Person class.
+
+```python 
+from query import Query
+```
+
+To learn more about importing modules in Python, refer to the documentation [here.](https://docs.python.org/2/tutorial/modules.html)
+
+## Using Query in Our Person Class
+
+Great! Now define class methods on the Person class for `count`, `find_by_name`, `name_starts_with`, `is_older_than`, and `mean_age`. They should return the exact same values as the above class methods for the Query class, but they should simply call the corresponding Query class methods and return the result.
 
 
 ```python
-Driver.fleet_makes_count() 
-# returns a list of dictionaries as histograms with the key of a car make 
-# pointing to the number of cars of that make in the fleet
-# example: {'Honda': 2, 'Jeep': 1, 'Kia': 1, 'Toyota': 3}
+Person.find_by_name("Jeff") 
+# returns first person instance object who's name is "Jeff"
+
+Person.name_starts_with("M") 
+# returns a list of person instance objects whose name starts with the letter 'M'
+
+Person.is_older_than(30) 
+# returns a list of person instance objects whose age is greater than 30
+
+Person.mean_age() 
+# returns the mean age of all person instance objects)
 ```
 
-
-```python
-Driver.fleet_models_count() 
-# returns a list of dictionaries as histograms with the key of a car model
-# pointing to the number of cars of that model in the fleet
-# example: {'Camry': 2, 'Civic': 1, 'Grand Cherokee': 1, 
-# 'Highlander': 1, 'Pilot': 1, 'Sonata': 1}
-```
-
-
-```python
-Driver.percent_of_fleet("Toyota") 
-# returns the percentage of Toyotas in the fleet
-# example: 45.857%
-```
-
-> **hint:** for the last method, `percent_of_make`, you will need to return a string that represents the percentage  as a float with the percent sign at the end of the string. We can use the `float()` and `str()` functions to accomplish this as well as concating strings to add the `%` sign:
-
-
-```python
-num = float((2/10)*100)
-num_string = str(num)
-percent = num_string + "%"
-percent
-```
+> **note:** As we can see above, we no longer need to pass in a reference to the Person class in our arguments since we are using the Person class to call these methods. We will still need to pass those arguments into the Query class methods, however.
 
 ## Summary
-In this lab we practiced using class methods and class variables to both store our class's instance objects and operate on them in order to provide answers to our questions about the fleet. We might have noticed that the Driver class is getting pretty inflated with these querying methods. Perhaps there is a way we can structure our code to make this a bit cleaner for us? Maybe we could have another class that has these query methods that we use in our other classes? Let's find out!
+
+
+In this lab, we practiced using a local class as a module to create a separation of concerns for our program. By defining a Query class that operates on our other class(es), we were able to make our code cleaner and [D.R.Y.](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)er. We can define our query methods in the Query class and import them into any other class we'd like to instead of defining the same methods in each class. Great work! Feel free to continue practicing by defining other classes more methods to use with the Query class.
