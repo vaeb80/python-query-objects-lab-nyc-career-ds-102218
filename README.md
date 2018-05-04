@@ -90,6 +90,9 @@ Great! Now define class methods on the Person class for `count`, `find_by_name`,
 
 
 ```python
+Person.count() 
+# returns a number for the total count of person instances
+
 Person.find_by_name("Jeff") 
 # returns first person instance object who's name is "Jeff"
 
