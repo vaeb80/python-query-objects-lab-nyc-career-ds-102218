@@ -7,6 +7,11 @@ from query import Query
 class TestQueryPersonClassMethods(unittest.TestCase):
 
     def test_person_class_init(self):
+        global per_1
+        global per_2
+        global per_3
+        global per_4
+        global per_5
         per_1 = Person("Jeff", 31)
         per_2 = Person("Molly", 24)
         per_3 = Person("Kevin", 38)
@@ -27,14 +32,14 @@ class TestQueryPersonClassMethods(unittest.TestCase):
         self.assertEqual(Query.find_by_name(Person, "Jeff"), per_1)
 
     def test_query_name_starts_with_class_method(self):
-        self.assertEqual(Query.name_starts_with(Person, 'K'), per_3)
+        self.assertItemsEqual(Query.name_starts_with(Person, 'K'), [per_3])
 
     def test_query_is_older_than_class_method(self):
         self.assertItemsEqual(Query.is_older_than(Person, 30), [per_1, per_3])
 
     def test_query_mean_age_class_method(self):
         self.assertEqual(Query.mean_age(Person), 29)
-
+    #
     def test_person_count_class_method(self):
         self.assertEqual(Person.count(), 5)
 
@@ -42,7 +47,7 @@ class TestQueryPersonClassMethods(unittest.TestCase):
         self.assertEqual(Person.find_by_name("Jeff"), per_1)
 
     def test_person_name_starts_with_class_method(self):
-        self.assertEqual(Person.name_starts_with('K'), per_3)
+        self.assertEqual(Person.name_starts_with('K'), [per_3])
 
     def test_person_is_older_than_class_method(self):
         self.assertItemsEqual(Person.is_older_than(30), [per_1, per_3])
