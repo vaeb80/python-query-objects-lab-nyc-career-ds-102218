@@ -39,7 +39,7 @@ class TestQueryPersonClassMethods(unittest.TestCase):
 
     def test_query_mean_age_class_method(self):
         self.assertEqual(Query.mean_age(Person), 29)
-    #
+    
     def test_person_count_class_method(self):
         self.assertEqual(Person.count(), 5)
 

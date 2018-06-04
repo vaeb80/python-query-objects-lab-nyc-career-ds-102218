@@ -1,14 +1,6 @@
 class Query:
 
     @classmethod
-    def sort_by(cls, attr, otherClass):
-        return otherClass.all().sort(key = lambda obj: getattr(obj, attr))
-
-    @classmethod
-    def sort_by_name(cls, otherClass):
-        return sorted(otherClass.all(), key = lambda x: x.name)
-
-    @classmethod
     def count(cls, otherClass):
         return len(otherClass.all())
 
@@ -35,14 +27,6 @@ class Query:
             if person.age > age:
                 people.append(person)
         return people
-
-    @classmethod
-    def mean_age(cls, otherClass):
-        people = otherClass.all()
-        num = len(people)
-        ages = [person.age for person in people]
-        total_age = sum(ages)
-        return total_age/num
 
     @classmethod
     def mean_age(cls, otherClass):

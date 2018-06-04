@@ -1,5 +1,7 @@
 # import your Query class here
 from query import Query
+
+
 class Person:
 
     _all = []
