@@ -27,13 +27,6 @@ Person("Michelle", 33)
 ```
 
 
-
-
-    <person.Person at 0x10fe740f0>
-
-
-
-
 ```python
 from query import Query
 ```
@@ -48,24 +41,10 @@ Query.count(Person)
 ```
 
 
-
-
-    6
-
-
-
-
 ```python
 Query.find_by_name(Person, "Jeff") 
 # returns first person instance object who's name is "Jeff"
 ```
-
-
-
-
-    <person.Person at 0x10fe67d68>
-
-
 
 
 ```python
@@ -74,39 +53,16 @@ Query.name_starts_with(Person, "M")
 ```
 
 
-
-
-    [<person.Person at 0x10fe67d30>, <person.Person at 0x10fe740f0>]
-
-
-
-
 ```python
 Query.is_older_than(Person, 30) 
 # returns a list of person instance objects whose age is greater than 30
 ```
 
 
-
-
-    [<person.Person at 0x10fe67d68>,
-     <person.Person at 0x10fe67cf8>,
-     <person.Person at 0x10fe740f0>]
-
-
-
-
 ```python
 Query.mean_age(Person) 
 # returns the mean age of all person instance objects
 ```
-
-
-
-
-    29.666666666666668
-
-
 
 ## Importing The Query Class as a Module
 
@@ -149,13 +105,6 @@ Person.is_older_than(30)
 Person.mean_age() 
 # returns the mean age of all person instance objects)
 ```
-
-
-
-
-    29.666666666666668
-
-
 
 > **Note:** As we can see above, we no longer need to pass in a reference to the Person class in our arguments since we are using the Person class to call these methods. We will still need to pass those arguments into the Query class methods, however.
 
